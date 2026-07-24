@@ -62,15 +62,46 @@ export async function* runAudit({ target, isLumen, intensity = 1 }) {
     try { await fetch(`${target}/api/admin/reset`, { method: 'POST' }); } catch {}
     yield { type: 'log', kind: 'setup', text: `Reset ${hostOf(target)} to a clean seed. Beginning audit.` };
     await sleep(500);
-  } else {
-    yield { type: 'log', kind: 'setup', text: `Probing ${hostOf(target)} for economic surfaces…` };
-    await sleep(600);
   }
 
   if (!isLumen) {
-    // Honest best-effort for a non-demo target: we can't assume Lumen's API.
-    yield { type: 'log', kind: 'note', text: 'General targets get a best-effort probe. Deep economic audits are tuned per app — this demo runs the full suite against the reference target.' };
-    yield { type: 'done', damageUsd: 0, ms: Date.now() - t0, note: 'best-effort' };
+    // Best-effort recon of a real, unknown site: fetch it and look for the usual
+    // economic surfaces. Kevin genuinely pokes around — he just can't deep-audit
+    // an arbitrary app the way he can the reference target (that's the human's job).
+    const host = hostOf(target);
+    yield { type: 'log', kind: 'setup', text: `Opening ${host} and looking for a way in…` };
+    let html = '';
+    try {
+      const r = await fetch(target, { redirect: 'follow', signal: AbortSignal.timeout(8000) });
+      html = (await r.text()).toLowerCase();
+    } catch { /* site down / blocked — Kevin shrugs */ }
+    await sleep(700);
+
+    const surfaces = [
+      { k: /sign\s?up|register|create account|get started/, label: 'a signup flow' },
+      { k: /refer|invite a friend|referral/, label: 'a referral program' },
+      { k: /promo|coupon|discount code|voucher/, label: 'promo codes' },
+      { k: /free trial|free tier|free credits/, label: 'a free tier' },
+      { k: /pricing|subscribe|checkout|billing/, label: 'a billing surface' },
+    ];
+    const found = surfaces.filter((s) => s.k.test(html)).map((s) => s.label);
+    for (const f of found.slice(0, 3)) {
+      yield { type: 'log', kind: 'note', text: `Spotted ${f} — noted for a deeper look.` };
+      await sleep(650);
+    }
+    if (!found.length) {
+      yield { type: 'log', kind: 'note', text: html ? `Poked around the homepage but couldn't find an obvious way to farm anything.` : `Couldn't even get the door open — the site didn't answer.` };
+      await sleep(500);
+    }
+
+    yield {
+      type: 'done',
+      damageUsd: 0,
+      empty: true,
+      surfacesFound: found,
+      host,
+      ms: Date.now() - t0,
+    };
     return;
   }
 

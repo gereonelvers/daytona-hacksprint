@@ -731,3 +731,11 @@ footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wr
 /* mobile: constrain grid children so the ledger scrolls internally, not the page */
 .report-grid > *, .report-video > * { min-width: 0; }
 .ledger-wrap { max-width: 100%; }
+
+/* Kevin struck out / found-on-your-app block */
+.meter-empty { font-family: var(--font-mono), monospace; font-size: 12px; color: var(--hazard); margin-top: 10px; }
+.kevin-empty { border-top: 2px solid var(--ink); padding: 22px; background: var(--paper-deep); }
+.ke-title { font-family: var(--font-display), sans-serif; font-size: clamp(20px, 3vw, 27px); text-transform: uppercase; letter-spacing: .01em; line-height: 1; }
+.kevin-empty p { color: var(--ink-2); font-size: 15px; margin: 10px 0 16px; max-width: 64ch; }
+.ke-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.ke-row .own-input { flex: 1 1 240px; }
