@@ -1,5 +1,4 @@
 import data from '../data/economic.json';
-import { ThreadCard } from '../components/ExploitThread';
 import { AuditConsole } from '../components/AuditConsole';
 import { PhoneCard } from '../components/PhoneCard';
 
@@ -9,7 +8,7 @@ const num = (n) => Number(n || 0).toLocaleString('en-US');
 
 const CLASS_COPY = {
   SELF_REFERRAL: 'Sign up, refer yourself, collect both sides of the bonus. Repeat.',
-  DENIAL_OF_WALLET: 'One credit, a 500-image batch. The business pays Fireworks for every one.',
+  DENIAL_OF_WALLET: 'One credit, a 200-image batch. The business pays Fireworks for every one.',
   PROMO_STACKING: 'The welcome code isn’t single-use. Redeem it until you’re rich.',
   TRIAL_FARMING: 'A fresh email is 25 free credits. Emails are free.',
   CREDIT_MANIPULATION: 'The “gift credits” transfer trusts the amount. Mint, don’t earn.',
@@ -17,7 +16,6 @@ const CLASS_COPY = {
 
 export default function Page() {
   const e = data.economic;
-  const featured = data.featured || [];
   const maxUsd = Math.max(...e.taxonomy.map((t) => t.usd), 1);
   const voice = data.voice;
 
@@ -31,9 +29,8 @@ export default function Page() {
           </a>
           <nav>
             <a href="#audit">Send Kevin in</a>
-            <a href="#damage">The damage</a>
-            <a href="#proof">The ledger</a>
-            {voice && <a href="#voice">Phone calls</a>}
+            <a href="#report">The report</a>
+            <a href="#voice">Phone calls</a>
             <a href="#how">How it works</a>
             <a href="https://github.com/gereonelvers/daytona-hacksprint" target="_blank" rel="noreferrer" className="nav-gh" aria-label="GitHub repository">GitHub ↗</a>
           </nav>
@@ -45,17 +42,17 @@ export default function Page() {
         <div className="wrap">
           <div className="hero-grid">
             <div>
-              <p className="eyebrow">Adversarial abuse testing for web apps</p>
-              <h1>What if your next <span className="hl">thousand signups</span> all wanted to kill your business?</h1>
+              <p className="eyebrow">Adversarial abuse &amp; fraud testing</p>
+              <h1>Red-team your product against its <span className="hl">worst users</span>.</h1>
               <p className="hero-sub">
-                Kevin is your worst users, on day one. Point him at your app and he signs up, clicks
-                around, and hunts the <strong>economic</strong> exploits — self-referral farms, free-tier
-                abuse, promo stacking, denial-of-wallet — then hands you the bill he ran up.
+                Kevin is an AI adversary you point at your app and your support line. He farms referrals,
+                drains free tiers, stacks promos, and talks your agents out of refunds — then shows you
+                the money you’d lose, with receipts.
               </p>
               <div className="hero-cta">
-                <a className="btn btn-primary" href="#audit">Send Kevin in →</a>
+                <a className="btn btn-primary" href="#audit">Watch Kevin work →</a>
                 <a className="target-chip" href="https://lumen.testwithkevin.com" target="_blank" rel="noreferrer">
-                  <span className="dot" /> live target: Lumen, an AI SaaS
+                  <span className="dot" /> demo target: Lumen, a live AI SaaS
                 </a>
               </div>
             </div>
@@ -77,13 +74,13 @@ export default function Page() {
           <div className="stats">
             <div className="stat">
               <div className="stat-n money">{usd(e.damageUsd)}</div>
-              <div className="stat-l">Economic damage</div>
-              <div className="stat-note">Value drained + cost inflicted</div>
+              <div className="stat-l">Drained in one run</div>
+              <div className="stat-note">Value taken + cost inflicted</div>
             </div>
             <div className="stat">
-              <div className="stat-n">{num(e.abuseAccounts)}</div>
-              <div className="stat-l">Abuse accounts</div>
-              <div className="stat-note">{e.realCustomers} of them ever paid a cent</div>
+              <div className="stat-n">{e.agents}</div>
+              <div className="stat-l">Adversarial agents</div>
+              <div className="stat-note">In parallel, {Math.round(e.wallMs / 1000)}s wall clock</div>
             </div>
             <div className="stat">
               <div className="stat-n">{usd2(e.inflictedCostUsd)}</div>
@@ -91,72 +88,47 @@ export default function Page() {
               <div className="stat-note">Actual Fireworks bill Kevin ran up (whoops)</div>
             </div>
             <div className="stat">
-              <div className="stat-n">{Math.round(e.wallMs / 1000)}s</div>
-              <div className="stat-l">To find all of it</div>
-              <div className="stat-note">{e.agents} agents · {e.sandboxCount} sandboxes</div>
+              <div className="stat-n">{e.realCustomers}</div>
+              <div className="stat-l">Of {num(e.abuseAccounts)} that ever paid</div>
+              <div className="stat-note">Everyone else was Kevin</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* ---------------------------------------------------------- send kevin */}
-      <section id="audit" style={{ paddingTop: 40 }}>
+      <section id="audit" style={{ paddingTop: 46 }}>
         <div className="wrap">
           <div className="section-head" style={{ marginBottom: 24 }}>
-            <p className="eyebrow">Send Kevin in · live</p>
-            <h2>Run a real audit. Right now.</h2>
+            <p className="eyebrow">Watch Kevin work · live</p>
+            <h2>See it actually happen.</h2>
             <p>
-              This isn’t a replay. Hit the button and Kevin runs a real economic audit against the live
-              target and streams what he takes — priced from the target’s own ledger, in real time. Want
-              him on your app? Prove you own the domain first.
+              This runs for real against <b>Lumen</b> — a working AI SaaS we built and deployed to be
+              broken. Kevin signs up, farms the referral bonus, stacks promos, and burns the free tier;
+              the counter is priced live from Lumen’s own ledger. Point him at your app once you’ve
+              verified you own it.
             </p>
           </div>
           <AuditConsole />
+          <p className="muted" style={{ fontSize: 13.5, marginTop: 16, textAlign: 'center' }}>
+            One click sends one Kevin at the reference target. <a href="#report" style={{ borderBottom: '2px solid var(--hazard)' }}>See the full {e.agents}-agent report ↓</a> — or point him at your own app above once you’ve verified it.
+          </p>
         </div>
       </section>
 
-      {/* ------------------------------------------------------------ meet kevin */}
-      <section id="meet" style={{ paddingTop: 0 }}>
-        <div className="wrap">
-          <div className="meet">
-            <div className="meet-photo">
-              <img src="/kevin/kevin-money.jpg" alt="Kevin, fanning a stack of cash in a messy apartment" />
-              <span className="rapsheet">Subject: Kevin · status: at large</span>
-            </div>
-            <div>
-              <p className="eyebrow">Meet Kevin</p>
-              <h2>He’ll do anything for free stuff.</h2>
-              <p>
-                Kevin is the worst roommate you ever had, scaled to a few thousand of him. He never pays,
-                he reads the terms only to break them, and he treats your growth budget like a piñata.
-                He’s not a hacker — he just uses your product exactly as built, against you. You point
-                him at your app; he finds the leaks and hands you the bill.
-              </p>
-              <div className="rap">
-                <span>self-referral rings</span>
-                <span>free-trial farming</span>
-                <span>promo stacking</span>
-                <span>denial-of-wallet</span>
-                <span>social engineering</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------------- damage */}
-      <section id="damage">
+      {/* ------------------------------------------------------------- report */}
+      <section id="report" style={{ background: 'var(--paper-deep)' }}>
         <div className="wrap">
           <div className="section-head">
-            <p className="eyebrow">The damage</p>
-            <h2>Five ways to bleed a business, priced out.</h2>
+            <p className="eyebrow">The report</p>
+            <h2>Every dollar, accounted for.</h2>
             <p>
-              Every figure here is Lumen’s own server-side ledger — value it granted, and real
-              inference cost it paid, for accounts that never produced a dollar of revenue. No model
-              judged this. It’s accounting.
+              That was one Kevin. Turn {e.agents} of them loose and the same app bleeds {usd(e.damageUsd)}.
+              None of it is a guess — it’s read straight from the target’s books.
             </p>
           </div>
 
+          {/* damage by exploit */}
           <div className="tax">
             {e.taxonomy.map((t) => (
               <div className="tax-row" key={t.id}>
@@ -172,119 +144,74 @@ export default function Page() {
             ))}
           </div>
 
-          <div style={{ marginTop: 46 }} className="findings-split-2">
-            <div className="method">
-              <p className="eyebrow">Why this is provable, not vibes</p>
-              <p style={{ marginTop: 16 }}>
-                We own the target. Lumen is a real, deployed AI SaaS with real signup, referral, promo,
-                and generation flows — and an instrumented ledger underneath. Kevin doesn’t need us to
-                grade him: when he refers himself five times, the ledger shows{' '}
-                <code>+250 credits granted to accounts sharing one IP, revenue $0</code>. That’s the
-                exploit, in the business’s own books.
-              </p>
-              <p>
-                The generation endpoint really does call Fireworks, so denial-of-wallet spends{' '}
-                <strong>{usd2(e.inflictedCostUsd)}</strong> of actual money — metered from real calls, the
-                batch modeled at true per-call cost. Nothing here is hypothetical.
+          {/* evidence + braintrust */}
+          <div className="report-grid">
+            <div>
+              <p className="eyebrow" style={{ marginBottom: 14 }}>The evidence — Lumen’s own ledger</p>
+              <div className="ledger-wrap">
+                <table className="ledger">
+                  <thead>
+                    <tr><th>Account</th><th>Fraud signal</th><th className="num">Taken</th><th className="num">Paid</th></tr>
+                  </thead>
+                  <tbody>
+                    {(data.ledgerAccounts || []).slice(0, 10).map((a) => (
+                      <tr key={a.id} className="abuse">
+                        <td>{a.email}</td>
+                        <td>{a.disposable ? 'disposable email' : `shared IP ${a.ip}`}</td>
+                        <td className="num">{num(a.ledger.creditsGranted)} cr</td>
+                        <td className="num">{a.ledger.revenueUsd > 0 ? <span className="badge-paid">{usd2(a.ledger.revenueUsd)}</span> : <span className="badge-abuse">$0</span>}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="muted" style={{ fontSize: 12.5, marginTop: 10 }}>
+                {num(e.ledgerAccounts)} accounts · {num(e.abuseAccounts)} share a fraud signal · {e.realCustomers} paid.
               </p>
             </div>
-            <div>
-              <p className="eyebrow">Which exploit pays best</p>
-              <div className="tax" style={{ marginTop: 16 }}>
-                {e.byStrategy.filter((s) => s.usd > 0).map((s) => (
-                  <div className="tax-row" key={s.id} style={{ gridTemplateColumns: '1fr 110px' }}>
-                    <div>
-                      <div className="tax-name">{s.label}</div>
-                      <div className="tax-rule">{s.runs} agents · {num(s.steps)} actions</div>
-                    </div>
-                    <div className="tax-count">{usd(s.usd)}<span>{num(s.incidents)} hits</span></div>
+
+            <div className="bt-card">
+              <div className="bt-eyebrow">Scored in Braintrust</div>
+              <div className="bt-h">Every session graded, not just tallied.</div>
+              <p>
+                All {e.agents} attack sessions are logged to Braintrust with the exploit class, the persona,
+                and the dollar impact as scores — so “which exploit pays best” and “which persona farms
+                hardest” are filters, not reruns.
+              </p>
+              <div className="bt-scores">
+                {e.byStrategy.filter((s) => s.usd > 0).slice(0, 4).map((s) => (
+                  <div className="bt-score" key={s.id}>
+                    <span className="bt-lab">{s.label}</span>
+                    <span className="bt-val">{usd(s.usd)}</span>
                   </div>
                 ))}
               </div>
+              <a className="btn ghost bt-btn" href="https://www.braintrust.dev/app/hirekevin-economic" target="_blank" rel="noreferrer">Open the Braintrust run ↗</a>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ---------------------------------------------------------- how broke */}
-      <section id="how-broke" style={{ background: 'var(--paper-deep)' }}>
-        <div className="wrap">
-          <div className="section-head">
-            <p className="eyebrow">How he did it</p>
-            <h2>Not a hack. A signup form.</h2>
-            <p>
-              Every one of these is a normal user doing normal things — just too many times, or in the
-              wrong order. Open a thread to watch the actual sequence of clicks and calls Kevin made.
-            </p>
-          </div>
-          <div className="calls">
-            {featured.slice(0, 6).map((t, i) => <ThreadCard key={t.id} thread={t} rank={i + 1} />)}
-          </div>
-        </div>
-      </section>
-
-      {/* ----------------------------------------------------------- watch it */}
-      <section id="watch" className="band">
-        <div className="wrap">
-          <div className="section-head">
-            <p className="eyebrow">Watch it happen</p>
-            <h2 style={{ color: 'var(--paper)' }}>Kevin, in a browser, farming your credits.</h2>
-            <p>
-              A real browser agent driving the live Lumen UI like an abuser would — sign up, copy the
-              referral link, spin up five “friends”, and watch one account’s balance climb from 25 to
-              275 on free money. Then one credit buys a 200-image batch.
-            </p>
-          </div>
-          <div className="video-frame">
-            <video
-              src="/video/referral-farm.mp4"
-              controls
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster="/video/referral-farm-poster.jpg"
-            />
-            <div className="video-cap">
-              <span className="player-label">Browser agent · self-referral ring + denial of wallet</span>
-              <span>Real Chromium · live target · 34s, unedited</span>
+          {/* browser proof */}
+          <div className="report-video">
+            <div className="rv-copy">
+              <p className="eyebrow" style={{ marginBottom: 12 }}>Caught on camera</p>
+              <h3 style={{ fontSize: 26 }}>A real browser, farming a referral ring.</h3>
+              <p style={{ color: 'var(--ink-2)', marginTop: 10, fontSize: 15 }}>
+                Not an API script — an actual browser agent clicking through the live UI: sign up, copy
+                the referral link, spin up five “friends”, watch one balance climb from 25 to 275 on free
+                money. Then one credit buys a 200-image batch.
+              </p>
+              <p style={{ color: 'var(--ink-2)', marginTop: 10, fontSize: 15 }}>
+                And he doesn’t stop at the web app — <a href="#voice" style={{ borderBottom: '2px solid var(--hazard)' }}>he calls your support line too ↓</a>
+              </p>
+            </div>
+            <div className="video-frame">
+              <video src="/video/referral-farm.mp4" controls muted loop playsInline preload="metadata" poster="/video/referral-farm-poster.jpg" />
+              <div className="video-cap">
+                <span className="player-label">Browser agent · self-referral ring</span>
+                <span>Real Chromium · live target · 34s, unedited</span>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------------- ledger */}
-      <section id="proof">
-        <div className="wrap">
-          <div className="section-head">
-            <p className="eyebrow">The ledger</p>
-            <h2>The evidence is the business’s own books.</h2>
-            <p>A sample of the accounts Kevin created, straight from Lumen’s ledger. Red rows share a fraud signal — an IP, a device, a disposable domain — and never paid.</p>
-          </div>
-          <div className="ledger-wrap">
-            <table className="ledger">
-              <thead>
-                <tr><th>Account</th><th>Signal</th><th className="num">Credits taken</th><th className="num">Cost caused</th><th className="num">Paid</th></tr>
-              </thead>
-              <tbody>
-                {(data.ledgerAccounts || []).slice(0, 16).map((a) => {
-                  const abuse = a.ledger.revenueUsd === 0 && (a.disposable || true);
-                  return (
-                    <tr key={a.id} className={abuse ? 'abuse' : ''}>
-                      <td>{a.email}</td>
-                      <td>{a.disposable ? 'disposable email' : a.ip}</td>
-                      <td className="num">{num(a.ledger.creditsGranted)}</td>
-                      <td className="num">{usd2(a.ledger.realCostUsd)}</td>
-                      <td className="num">{a.ledger.revenueUsd > 0 ? <span className="badge-paid">{usd2(a.ledger.revenueUsd)}</span> : <span className="badge-abuse">$0</span>}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          <p className="muted" style={{ fontSize: 13, marginTop: 12 }}>
-            {num(e.ledgerAccounts)} accounts total · {num(e.abuseAccounts)} tripping a fraud signal · {e.realCustomers} paying.
-          </p>
         </div>
       </section>
 
@@ -300,17 +227,17 @@ export default function Page() {
               <div className="section-head" style={{ marginBottom: 22 }}>
                 <h2 style={{ color: 'var(--paper)' }}>Kevin has a phone number. He knows how to use it.</h2>
                 <p>
-                  The same adversary, over a real line. Kevin dials a number and social-engineers whoever
-                  answers — inventing urgency, faking authority, never taking no. Call him, or have him
-                  call you, and see if you hold the line.
+                  Give him a support line and he calls it — a real Telnyx call, his own voice, one goal:
+                  talk your way to a refund with no verification. He speaks, Telnyx transcribes you,
+                  Fireworks picks his next move. Call him, or have him call you, and see if you hold.
                 </p>
               </div>
               <PhoneCard />
               {voice && (
                 <p className="phone-sub" style={{ marginTop: 18 }}>
-                  At scale, we ran {num(voice.baseline.total)} of these against a bank’s AI support agent:{' '}
+                  At scale we ran {num(voice.baseline.total)} of these against a bank’s AI support agent:{' '}
                   {voice.baseline.violationRate}% broke policy — refunds approved, balances leaked, PII disclosed.{' '}
-                  <a href="/voice" style={{ color: 'var(--hazard)', borderBottom: '1px solid var(--hazard)' }}>See the full voice report →</a>
+                  <a href="/voice" style={{ color: 'var(--hazard)', borderBottom: '1px solid var(--hazard)' }}>Hear the worst call →</a>
                 </p>
               )}
             </div>
@@ -319,7 +246,7 @@ export default function Page() {
       </section>
 
       {/* ----------------------------------------------------------------- how */}
-      <section id="how" className="band">
+      <section id="how" className="band" style={{ borderTop: '2px solid #2a2620' }}>
         <div className="wrap">
           <div className="section-head">
             <p className="eyebrow">How it works</p>
@@ -337,27 +264,27 @@ export default function Page() {
           <div className="sponsors" style={{ marginTop: 26 }}>
             <div className="sponsor">
               <div className="srole">Isolation &amp; scale</div><div className="sname">Daytona</div>
-              <p>Every Kevin runs in its own sandbox against the live target — {num(e.accountsCreated)} throwaway accounts across {e.sandboxCount} sandboxes. Chromium runs in-sandbox too, so the browser agent is the same primitive.</p>
+              <p>Every Kevin runs in its own sandbox against the live target — {num(e.accountsCreated)} throwaway accounts across {e.sandboxCount} sandboxes. Chromium runs in-sandbox too.</p>
             </div>
             <div className="sponsor">
               <div className="srole">Kevin’s brain + the meter</div><div className="sname">Fireworks AI</div>
-              <p>DeepSeek V4 decides each of Kevin’s {num(e.totalSteps)} moves and every phone-call line. It’s also what the target pays per generation — so denial-of-wallet burns the sponsor’s own meter, for real.</p>
+              <p>DeepSeek V4 decides each of Kevin’s {num(e.totalSteps)} moves and every phone-call line. It’s also what the target pays per generation — denial-of-wallet burns the sponsor’s own meter, for real.</p>
             </div>
             <div className="sponsor">
               <div className="srole">Evaluation</div><div className="sname">Braintrust</div>
-              <p>All {e.agents} attack sessions logged with exploit class, persona, and dollar impact — “which exploit pays best” is a filter, not a rerun.</p>
+              <p>All {e.agents} sessions logged with exploit class, persona, and dollar impact — the report you can slice.</p>
             </div>
             <div className="sponsor">
               <div className="srole">Real phone calls</div><div className="sname">Telnyx</div>
-              <p>Kevin’s number (<code>+1 573 788 8354</code>) is a live TeXML app. Inbound or outbound, he runs a turn-based hustle: he speaks, Telnyx transcribes the reply, Fireworks picks his next line.</p>
+              <p>Kevin’s number (<code>+1 573 788 8354</code>) is a live TeXML app — inbound and outbound, turn-based, in his own ElevenLabs voice.</p>
             </div>
             <div className="sponsor">
               <div className="srole">Voice</div><div className="sname">ElevenLabs</div>
-              <p>The worst support-agent call is rendered to speech in two voices. A transcript argues; a recording proves.</p>
+              <p>Kevin’s phone voice, and the worst recorded support call rendered to speech. A transcript argues; a recording proves.</p>
             </div>
             <div className="sponsor">
-              <div className="srole">Real signups + DNS + hosting</div><div className="sname">Brevo · Cloudflare · Railway</div>
-              <p>Brevo sends the target’s real welcome emails from <code>hello@testwithkevin.com</code>; Cloudflare backs the TXT-record ownership check; Railway hosts the site and the live target.</p>
+              <div className="srole">Signups · DNS · hosting</div><div className="sname">Brevo · Cloudflare · Railway</div>
+              <p>Brevo sends the target’s real welcome emails; Cloudflare backs the TXT ownership check; Railway hosts the site and the live target.</p>
             </div>
           </div>
         </div>

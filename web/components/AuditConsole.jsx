@@ -103,6 +103,7 @@ export function AuditConsole() {
               {ev.type === 'action' && (
                 <>
                   <span className="log-tool mono">{ev.tool}</span>
+                  {ev.args?.email && <span className="log-arg mono">{ev.args.email}</span>}
                   <span className="log-out mono" data-win={ev.win ? '1' : '0'}>{ev.out}</span>
                 </>
               )}

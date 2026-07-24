@@ -11,6 +11,8 @@
  * spec simulates a botnet that varies IPs but shares a device / disposable email.
  */
 
+import { fakeEmail } from './fake-identity.js';
+
 export const TOOL_SCHEMAS = [
   {
     type: 'function',
@@ -112,7 +114,8 @@ export function makeExecutor({ baseUrl, spec, fetchImpl = fetch }) {
       case 'create_account': {
         accountSeq++;
         const handle = String(args.handle || `kev${accountSeq}`).replace(/[^a-z0-9]/gi, '').slice(0, 20) || `kev${accountSeq}`;
-        const email = `${handle}.${spec.index}.${accountSeq}@${spec.emailDomain}`;
+        // Plausible email; the fraud tell is the shared IP/device/disposable domain, not the name.
+        const email = fakeEmail(spec.index * 97 + accountSeq, spec.emailDomain);
         const r = await post('/api/signup', { email, referralCode: args.referralCode });
         if (!r.ok) return { error: r.data.error || `signup failed (${r.status})` };
         const acct = { token: r.data.token, email, referralCode: r.data.account.referralCode };

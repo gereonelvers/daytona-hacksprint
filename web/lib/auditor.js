@@ -18,6 +18,19 @@ const COST_PER_GEN = 0.011;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const usd = (n) => Math.round(n * 100) / 100;
 
+// Plausible ring identities — real-looking emails, all on a disposable domain and
+// (below) one shared IP. The name isn't the tell; the shared signals are.
+const FIRST = ['jordan', 'sam', 'alex', 'taylor', 'morgan', 'casey', 'jamie', 'riley', 'marcus', 'sofia', 'diego', 'nina'];
+const LAST = ['miller', 'lopez', 'wong', 'okafor', 'patel', 'nguyen', 'reyes', 'brooks', 'hayes', 'costa', 'walsh', 'shah'];
+const DISPOSABLE = ['grr.la', 'mailinator.com', 'guerrillamail.com', 'sharklasers.com', 'getnada.com'];
+function ringEmail(seed) {
+  const f = FIRST[seed % FIRST.length];
+  const l = LAST[(seed * 7 + 2) % LAST.length];
+  const n = 10 + ((seed * 31) % 89);
+  const dom = DISPOSABLE[seed % DISPOSABLE.length];
+  return (seed % 2 ? `${f}.${l}${n}` : `${f[0]}${l}${n}`) + `@${dom}`;
+}
+
 async function jpost(base, path, body, token, ip, device) {
   const res = await fetch(`${base}${path}`, {
     method: 'POST',
@@ -63,21 +76,23 @@ export async function* runAudit({ target, isLumen, intensity = 1 }) {
 
   const ip = `10.20.${Math.floor(30 + intensity * 3)}.${7}`;
   const device = 'kevin-live-audit';
-  const stamp = Date.now().toString(36).slice(-4);
+  const seed0 = Date.now() % 9973;
 
   // --- 1) Self-referral ring -------------------------------------------------
   yield { type: 'exploit', id: 'SELF_REFERRAL', label: 'Self-referral ring' };
-  const root = await jpost(target, '/api/signup', { email: `kevin.${stamp}@grr.la` }, null, ip, device);
+  const rootEmail = ringEmail(seed0);
+  const root = await jpost(target, '/api/signup', { email: rootEmail }, null, ip, device);
   const rootToken = root.data.token;
   let code = root.data.account?.referralCode;
-  yield { type: 'action', tool: 'create_account', args: { email: `kevin.${stamp}@grr.la` }, out: `+${SIGNUP} credits`, win: false, damage: bump(SIGNUP * CREDIT_USD) };
-  await sleep(360);
+  yield { type: 'action', tool: 'create_account', args: { email: rootEmail }, out: `+${SIGNUP} credits`, win: false, damage: bump(SIGNUP * CREDIT_USD) };
+  await sleep(420);
   const ringSize = 4 + Math.round(intensity * 2);
   for (let i = 1; i <= ringSize; i++) {
-    const r = await jpost(target, '/api/signup', { email: `kevin.${stamp}.${i}@grr.la`, referralCode: code }, null, ip, device);
+    const email = ringEmail(seed0 + i * 13);
+    const r = await jpost(target, '/api/signup', { email, referralCode: code }, null, ip, device);
     code = r.data.account?.referralCode || code;
-    yield { type: 'action', tool: 'create_account', args: { referralCode: 'KV…', handle: `friend${i}` }, out: `+${SIGNUP + REFERRAL} credits (referral paid)`, win: true, damage: bump((SIGNUP + REFERRAL) * CREDIT_USD) };
-    await sleep(340);
+    yield { type: 'action', tool: 'create_account', args: { email, referralCode: 'KV…' }, out: `+${SIGNUP + REFERRAL} credits (referral paid)`, win: true, damage: bump((SIGNUP + REFERRAL) * CREDIT_USD) };
+    await sleep(420);
   }
 
   // --- 2) Promo stacking -----------------------------------------------------
@@ -105,12 +120,18 @@ export async function* runAudit({ target, isLumen, intensity = 1 }) {
   }
 
   // Final: read the real damage from the target's own books.
+  yield { type: 'log', kind: 'setup', text: `Reading ${hostOf(target)}'s ledger to price the damage…` };
+  await sleep(650);
   let ledgerDamage = null;
   if (isLumen) {
     try {
       const led = await (await fetch(`${target}/api/admin/ledger`)).json();
       ledgerDamage = led.damage;
     } catch {}
+  }
+  if (ledgerDamage) {
+    yield { type: 'log', kind: 'done', text: `Ledger confirms ${ledgerDamage.abuseAccounts} abuse accounts, ${ledgerDamage.realCustomers} paying. Kevin also placed a red-team call to the support line — hear it below.` };
+    await sleep(400);
   }
 
   yield {

@@ -40,5 +40,6 @@ export async function POST(req) {
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) return json({ error: data?.errors?.[0]?.detail || `Telnyx ${res.status}` }, 502);
-  return json({ ok: true, to, from: FROM, callSid: data?.data?.call_sid || data?.data?.call_control_id || null });
+  // TeXML outbound returns { call_sid, status, to, from } at the top level.
+  return json({ ok: true, to, from: FROM, callSid: data.call_sid || data?.data?.call_sid || null, status: data.status });
 }
