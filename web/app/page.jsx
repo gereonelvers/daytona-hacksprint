@@ -196,7 +196,7 @@ export default function Page() {
               loop
               playsInline
               preload="metadata"
-              poster=""
+              poster="/video/referral-farm-poster.jpg"
             />
             <div className="video-cap">
               <span className="player-label">Browser agent · self-referral ring + denial of wallet</span>
