@@ -16,7 +16,11 @@ const CLASS_COPY = {
 export default function Page() {
   const e = data.economic;
   const featured = data.featured || [];
-  const hero = featured.find((f) => f.strategyId === 'self_referral' && f.accountsCreated > 2) || featured[0];
+  // Prefer the self-referral thread with the most accounts — its exhibit reads as
+  // a clean "ring being built", which matches the Exhibit A label.
+  const hero = [...featured]
+    .filter((f) => f.strategyId === 'self_referral')
+    .sort((a, b) => b.accountsCreated - a.accountsCreated)[0] || featured[0];
   const heroTrace = heroClip(hero);
   const maxUsd = Math.max(...e.taxonomy.map((t) => t.usd), 1);
   const voice = data.voice;
@@ -324,11 +328,19 @@ export default function Page() {
   );
 }
 
-/** Trim the hero thread to the punchiest run of actions (the ring being built). */
+/**
+ * Build the hero exhibit: the account-creation chain that is the ring, so the
+ * story is legible at a glance. We keep the setup account, the referral-code
+ * fetch, and the referral signups — the actions that actually move money — and
+ * drop unrelated probing the agent did in the same session.
+ */
 function heroClip(thread) {
   if (!thread?.trace) return null;
-  const t = thread.trace;
-  const firstWin = t.findIndex((x) => x.name === 'create_account' && x.result?.referralApplied);
-  if (firstWin === -1) return t.slice(0, 6);
-  return t.slice(Math.max(0, firstWin - 2), firstWin + 4);
+  const ring = thread.trace.filter(
+    (x) => x.name === 'create_account' || x.name === 'get_referral_code',
+  );
+  if (ring.length >= 4) return ring.slice(0, 6);
+  // Fallback: the first value-extracting run of whatever this thread did.
+  const firstWin = thread.trace.findIndex((x) => x.result && !x.result.error);
+  return thread.trace.slice(Math.max(0, firstWin), firstWin + 6);
 }
