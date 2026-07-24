@@ -727,3 +727,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wr
 @media (max-width: 900px) { .report-video { grid-template-columns: 1fr; gap: 22px; } }
 .report-video .video-frame { border-color: var(--ink); }
 .report-video .video-cap { background: var(--ink); }
+
+/* mobile: constrain grid children so the ledger scrolls internally, not the page */
+.report-grid > *, .report-video > * { min-width: 0; }
+.ledger-wrap { max-width: 100%; }
