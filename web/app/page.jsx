@@ -171,12 +171,13 @@ export default function Page() {
             </div>
 
             <div className="bt-card">
-              <div className="bt-eyebrow">Scored in Braintrust</div>
-              <div className="bt-h">Every session graded, not just tallied.</div>
+              <div className="bt-eyebrow">The scorecard</div>
+              <div className="bt-h">Which exploit pays best.</div>
               <p>
-                All {e.agents} attack sessions are logged to Braintrust with the exploit class, the persona,
-                and the dollar impact as scores — so “which exploit pays best” and “which persona farms
-                hardest” are filters, not reruns.
+                Every one of the {e.agents} sessions is graded — by exploit class, persona, and dollar
+                impact — so this report is sliceable, not just a total. The scoring runs on{' '}
+                <b style={{ color: 'var(--hazard)' }}>Braintrust</b>; you get the results right here, no
+                dashboard to log into.
               </p>
               <div className="bt-scores">
                 {e.byStrategy.filter((s) => s.usd > 0).slice(0, 4).map((s) => (
@@ -186,7 +187,7 @@ export default function Page() {
                   </div>
                 ))}
               </div>
-              <a className="btn ghost bt-btn" href="https://www.braintrust.dev/app/hirekevin-economic" target="_blank" rel="noreferrer">Open the Braintrust run ↗</a>
+              <a className="btn ghost bt-btn" href="https://github.com/gereonelvers/daytona-hacksprint/blob/main/engine/src/braintrust-economic.js" target="_blank" rel="noreferrer">See how it’s scored ↗</a>
             </div>
           </div>
 

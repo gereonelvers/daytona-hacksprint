@@ -14,13 +14,18 @@ const usd = (n) => '$' + Number(n || 0).toLocaleString('en-US', { minimumFractio
  * audit what you can prove you control.
  */
 export function AuditConsole() {
-  const [domain, setDomain] = useState(REFERENCE);
-  const [verified, setVerified] = useState(true); // reference target starts authorised
-  const [reference, setReference] = useState(true);
+  // The top console always audits the pre-authorised reference target.
+  const domain = REFERENCE;
+  const verified = true;
+  const reference = true;
   const [challenge, setChallenge] = useState(null);
   const [checking, setChecking] = useState(false);
   const [ownOpen, setOwnOpen] = useState(false);
   const [verifyMsg, setVerifyMsg] = useState(null);
+  const [ownDomain, setOwnDomain] = useState('');
+  const [email, setEmail] = useState('');
+  const [ownVerified, setOwnVerified] = useState(false);
+  const [requesting, setRequesting] = useState(false);
 
   const [running, setRunning] = useState(false);
   const [done, setDone] = useState(false);
@@ -38,25 +43,38 @@ export function AuditConsole() {
     });
   }, []);
 
-  async function setupOwnDomain(action) {
+  async function verifyOwn(action) {
+    if (!ownDomain.trim()) { setVerifyMsg({ type: 'err', text: 'Enter your domain first.' }); return; }
     setChecking(true); setVerifyMsg(null);
     try {
-      const res = await fetch('/api/verify', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ domain, action }) });
+      const res = await fetch('/api/verify', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ domain: ownDomain, action }) });
       const data = await res.json();
       if (data.error) { setVerifyMsg({ type: 'err', text: data.error }); setChecking(false); return; }
       setChallenge(data);
-      setReference(!!data.reference);
       if (data.verified) {
-        setVerified(true);
-        setVerifyMsg({ type: 'ok', text: data.reference ? 'Reference target — pre-authorised.' : `Verified via ${data.via}. Kevin's cleared in.` });
+        setOwnVerified(true);
+        setVerifyMsg({ type: 'ok', text: data.reference ? 'Pre-authorised reference target. Add your email and Kevin will run.' : `Verified via DNS. Add your email and Kevin will run.` });
       } else if (action === 'check') {
-        setVerified(false);
+        setOwnVerified(false);
         setVerifyMsg({ type: 'err', text: 'TXT record not found yet. DNS can take a minute — try again.' });
       }
     } catch (e) {
       setVerifyMsg({ type: 'err', text: String(e.message) });
     }
     setChecking(false);
+  }
+
+  async function requestReport() {
+    setRequesting(true); setVerifyMsg(null);
+    try {
+      const res = await fetch('/api/request-audit', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ domain: ownDomain, email }) });
+      const data = await res.json();
+      if (data.error) setVerifyMsg({ type: 'err', text: data.error });
+      else setVerifyMsg({ type: 'ok', text: data.message || `Report on its way to ${email}.` });
+    } catch (e) {
+      setVerifyMsg({ type: 'err', text: String(e.message) });
+    }
+    setRequesting(false);
   }
 
   function sendKevinIn() {
@@ -114,24 +132,41 @@ export function AuditConsole() {
       </div>
 
       <div className="console-own">
-        <button className="own-toggle" onClick={() => { setOwnOpen((o) => !o); if (!challenge) setupOwnDomain('challenge'); }}>
+        <button className="own-toggle" onClick={() => setOwnOpen((o) => !o)}>
           {ownOpen ? '– ' : '+ '} Point Kevin at your own app
         </button>
         {ownOpen && (
           <div className="own-body">
-            <p className="own-help">You can only audit a domain you control. Enter it, publish the TXT record we give you, and we’ll verify ownership over DNS before Kevin runs.</p>
+            <p className="own-help">
+              You can only audit a domain you control. Enter it, publish the one-line TXT record we give
+              you, and Kevin runs a real audit — then emails you the report. No account needed.
+            </p>
             <div className="own-row">
-              <input className="own-input mono" value={domain} onChange={(e) => { setDomain(e.target.value); setVerified(false); setReference(false); }} placeholder="app.yourcompany.com" />
-              <button className="btn ghost" onClick={() => setupOwnDomain('challenge')} disabled={checking}>Get record</button>
+              <input className="own-input mono" value={ownDomain}
+                onChange={(e) => { setOwnDomain(e.target.value); setOwnVerified(false); setChallenge(null); }}
+                placeholder="app.yourcompany.com" />
+              <button className="btn ghost" onClick={() => verifyOwn('challenge')} disabled={checking}>Get record</button>
             </div>
-            {challenge && !reference && (
+
+            {challenge && !challenge.reference && !ownVerified && (
               <div className="own-record">
                 <div className="rec-line"><span className="rk">TYPE</span><span className="mono">TXT</span></div>
                 <div className="rec-line"><span className="rk">NAME</span><span className="mono">{challenge.recordName}</span></div>
                 <div className="rec-line"><span className="rk">VALUE</span><span className="mono rec-val">{challenge.recordValue}</span></div>
-                <button className="btn btn-primary" onClick={() => setupOwnDomain('check')} disabled={checking}>{checking ? 'Checking DNS…' : 'Verify ownership'}</button>
+                <button className="btn btn-primary" onClick={() => verifyOwn('check')} disabled={checking}>{checking ? 'Checking DNS…' : 'Verify ownership'}</button>
               </div>
             )}
+
+            {ownVerified && (
+              <div className="own-record">
+                <p className="own-help" style={{ margin: '0 0 10px' }}><b>{ownDomain}</b> verified. Where should Kevin send the report?</p>
+                <div className="own-row">
+                  <input className="own-input mono" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@yourcompany.com" />
+                  <button className="btn btn-primary" onClick={requestReport} disabled={requesting || !email}>{requesting ? 'Sending Kevin in…' : 'Email me the report'}</button>
+                </div>
+              </div>
+            )}
+
             {verifyMsg && <div className={`notice ${verifyMsg.type}`}>{verifyMsg.text}</div>}
           </div>
         )}
