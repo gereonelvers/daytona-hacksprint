@@ -14,3 +14,8 @@ results/run-*.json
 /kevin-calling.png
 /kevin-laptop.png
 /kevin-icon.png
+
+# transient engine outputs (the web reads web/data/*.json)
+results/slice.json
+results/browser/
+results/audio/*.mp3
