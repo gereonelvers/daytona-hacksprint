@@ -12,6 +12,7 @@
   "dependencies": {
     "@daytonaio/sdk": "0.200.1",
     "braintrust": "^3.24.0",
-    "esbuild": "^0.25.0"
+    "esbuild": "^0.25.0",
+    "playwright-core": "^1.49.0"
   }
 }

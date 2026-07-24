@@ -498,3 +498,68 @@ footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wr
   .call-head .chips { grid-column: 1 / -1; justify-content: flex-start; }
   .stamp { right: 8px; bottom: 8px; font-size: 11px; padding: 5px 9px; }
 }
+
+/* ============================================================= v2 economic ==
+   Kevin attacks a web app. Each action is an HTTP call against the target; a
+   call that extracts value is stamped in red, like a violating tool call. */
+.thread { display: grid; gap: 2px; }
+.act {
+  display: grid; grid-template-columns: 20px 1fr auto; gap: 12px; align-items: baseline;
+  padding: 8px 12px; font-family: var(--font-mono), monospace; font-size: 12.5px;
+  background: var(--card); border: 1px solid var(--rule); border-radius: 4px;
+}
+.act.win { background: var(--stamp-soft); border-color: rgba(193,53,48,.3); }
+.act-i { color: var(--ink-3); font-size: 10px; }
+.act-name { font-weight: 700; }
+.act-args { color: var(--ink-2); overflow-wrap: anywhere; }
+.act-out { color: var(--seal); white-space: nowrap; font-size: 11.5px; }
+.act.win .act-out { color: var(--stamp); font-weight: 700; }
+
+/* live-ish damage counter in the hero */
+.money {
+  font-family: var(--font-display), sans-serif; font-weight: 800;
+  letter-spacing: -.04em; font-variant-numeric: tabular-nums; line-height: 1;
+  color: var(--stamp);
+}
+.exhibit .stamp.money-stamp { color: var(--stamp); border-color: var(--stamp); }
+
+/* target chip in the how-it-runs / hero */
+.target-chip {
+  display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px;
+  border: 2px solid var(--ink); border-radius: 999px; background: var(--card);
+  font-size: 13px; font-weight: 600; text-decoration: none; color: var(--ink);
+}
+.target-chip .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--seal); }
+
+/* section divider label for the two surfaces */
+.surface-tag {
+  display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-mono), monospace;
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
+  border: 1px solid var(--rule); border-radius: 999px; padding: 6px 14px; background: var(--card);
+}
+
+/* strategy leaderboard bars reuse .tax-row; add a $ variant */
+.usd-bar { height: 26px; background: var(--paper-deep); border-radius: 3px; overflow: hidden; }
+.usd-fill { height: 100%; background: var(--stamp); }
+
+/* ledger table (proof) */
+.ledger { width: 100%; border-collapse: collapse; font-size: 12.5px; font-family: var(--font-mono), monospace; }
+.ledger th, .ledger td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.ledger th { color: var(--ink-3); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+.ledger td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.ledger tr.abuse td:first-child { color: var(--stamp); }
+.ledger-wrap { overflow-x: auto; border: 2px solid var(--ink); border-radius: var(--r); }
+.badge-abuse { color: var(--stamp); font-weight: 700; }
+.badge-paid { color: var(--seal); font-weight: 700; }
+
+.findings-split-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+@media (max-width: 860px) { .findings-split-2 { grid-template-columns: 1fr; } }
+
+/* browser-hero video */
+.video-frame { border: 2px solid var(--paper); border-radius: var(--r); overflow: hidden; background: #000; }
+.video-frame video { display: block; width: 100%; height: auto; }
+.video-cap {
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 12px 16px; background: var(--ink); color: #B9B2A2; font-size: 12.5px;
+  font-family: var(--font-mono), monospace;
+}

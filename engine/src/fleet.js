@@ -20,10 +20,10 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-/** Bundle worker.js + deps into one self-contained script we can inject. */
-export async function bundleWorker() {
+/** Bundle a worker entry + deps into one self-contained script we can inject. */
+export async function bundleWorker(entry = 'worker.js') {
   const res = await build({
-    entryPoints: [path.join(__dirname, 'worker.js')],
+    entryPoints: [path.join(__dirname, entry)],
     bundle: true,
     format: 'esm',
     platform: 'node',
@@ -38,12 +38,13 @@ export async function bundleWorker() {
 const RESULT_RE = /__KEVIN_RESULT_START__([\s\S]*?)__KEVIN_RESULT_END__/;
 
 export class Fleet {
-  constructor({ apiKey, poolSize = 10, chunkSize = 8, concurrency = 12, onEvent = () => {} }) {
+  constructor({ apiKey, poolSize = 10, chunkSize = 8, concurrency = 12, onEvent = () => {}, workerEntry = 'worker.js' }) {
     this.daytona = new Daytona({ apiKey });
     this.poolSize = poolSize;
     this.chunkSize = chunkSize;
     this.concurrency = concurrency;
     this.onEvent = onEvent;
+    this.workerEntry = workerEntry;
     this.sandboxes = [];
   }
 
@@ -73,7 +74,7 @@ export class Fleet {
    * Failed chunks are retried once on a different sandbox before being recorded
    * as failures, so a single bad sandbox cannot silently eat part of the run.
    */
-  async run(specs, { targetPrompt, targetVariant, fireworksKey, turns = 6, stopOnLeak = true }) {
+  async run(specs, cfgExtra = {}) {
     const workerCode = await this.bundleWorker_();
     const queue = [];
     for (let i = 0; i < specs.length; i += this.chunkSize) {
@@ -86,12 +87,8 @@ export class Fleet {
 
     const runChunk = async (sandbox, chunk, attempt) => {
       const cfg = {
+        ...cfgExtra,
         specs: chunk,
-        targetPrompt,
-        targetVariant,
-        fireworksKey,
-        turns,
-        stopOnLeak,
         concurrency: this.concurrency,
         sandboxId: sandbox.id,
       };
@@ -142,7 +139,7 @@ export class Fleet {
   }
 
   async bundleWorker_() {
-    if (!this._worker) this._worker = await bundleWorker();
+    if (!this._worker) this._worker = await bundleWorker(this.workerEntry);
     return this._worker;
   }
 
