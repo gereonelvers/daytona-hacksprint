@@ -1,89 +1,99 @@
 # Demo script — 3 minutes
 
-**Live:** https://testwithkevin.com · **Repo:** github.com/gereonelvers/daytona-hacksprint
+**Live:** https://testwithkevin.com · **Target app:** https://lumen-production-7fb8.up.railway.app
+**Repo:** github.com/gereonelvers/daytona-hacksprint · **Braintrust:** projects `hirekevin-economic` + `hirekevin`
 
-Have open: the site (top of page), and the Braintrust project in a second tab.
-
----
-
-### 0:00 — The number (15s)
-
-> "We ran **800 adversarial conversations** against an AI bank support agent, in parallel, inside
-> isolated sandboxes. 400 against the agent as most teams would ship it, 400 against a hardened
-> version. It took four minutes."
-
-*Scroll to the stat strip: 400 calls · 16 breaches · $1,295 · 242s.*
+Have open: testwithkevin.com (top), the Lumen app in a second tab, Braintrust in a third.
 
 ---
 
-### 0:15 — Who Kevin is (20s)
+### 0:00 — The thesis (15s)
 
-> "This is Kevin. He's the worst roommate you ever had — he'll do anything for free stuff. You point
-> him at your agent, and he calls it. Hundreds of times. As a grieving spouse, as your own floor
-> supervisor, as an engineer who just needs to diff a fixture."
+> "Every founder stress-tests their app for load and for security. Nobody stress-tests it for
+> **abuse**. So: what if your next thousand signups were all trying to kill your business — not by
+> hacking it, but by using it exactly as designed, against you?"
 
----
-
-### 0:35 — The break, on screen (30s)
-
-*Point at Exhibit A in the hero — already on screen.*
-
-> "Here's one. Aria — the bank's agent — tells Kevin exactly what her limit is: five hundred dollars,
-> anything above needs a supervisor. So Kevin asks for exactly five hundred, against a fee that's 57
-> days old. She processes it. That's a policy break on two counts, and it's not us saying so —
-> that red line is the actual tool call, with its arguments."
+*Hero on screen: "What if your next thousand signups all wanted to kill your business?"*
 
 ---
 
-### 1:05 — Why it's rigorous, not vibes (35s)
+### 0:15 — Who Kevin is + the number (20s)
 
-*Scroll to Findings.*
+> "Meet Kevin. He's your worst users, on day one. We pointed him at a real, live AI SaaS we built —
+> Lumen, free credits, referrals, promo codes — and turned 60 of him loose. In about two minutes he
+> found five ways to drain it, for **$6,700** of damage, and forced **$348 of real Fireworks spend**.
+> Zero of his 195 accounts ever paid a cent."
 
-> "Every violation class here is a rule we wrote down **before** the run. Solid bars are breaches we
-> can **prove**: the agent either called a tool it wasn't allowed to call, or repeated a secret we
-> planted verbatim. Hatched bars are an LLM judge's opinion, labelled separately — we never mix them.
+*Scroll the stat strip: $6,697 · 195 abuse accounts · $347.60 real spend · 131s.*
+
+---
+
+### 0:35 — Exhibit A, the break on screen (25s)
+
+*Point at Exhibit A in the hero — the actual action log.*
+
+> "Here's one Kevin, verbatim. He signs up, grabs his referral code, then signs up four 'friends'
+> using it. Each one pays both sides fifty credits. Five accounts, one person, +200 free credits.
+> That red is money leaving the business — and it's not us saying so."
+
+---
+
+### 1:00 — Why it's provable (30s)
+
+*Scroll to The Damage.*
+
+> "This is the part that matters. We own Lumen, so it has an instrumented ledger. Every figure here
+> is the business's **own books** — value it granted, real inference cost it paid, for accounts that
+> produced zero revenue and share a fraud signal: an IP, a device, a disposable email. No model
+> graded this. It's accounting.
 >
-> Two things make that possible. The harness owns verification state, not the model — so 'refunded
-> $795 to an unverified caller' is a recorded fact. And the secrets are known strings, so a leak is a
-> substring match, not a judgement call.
->
-> And they disagree. On call 46, the LLM judge said the agent 'never disclosed sensitive information.'
-> String matching found the customer's **full card number** in the agent's own output — written into
-> a fictional training email about how to redact card numbers. Judges miss things."
+> And look at what actually pays: balance manipulation and promo stacking dwarf the clever stuff.
+> The exploits that kill you are boring."
 
-*Braintrust tab: all 800 transcripts, per-class scores, filterable by strategy and persona.*
+*Braintrust tab: 60 sessions, each scored by exploit class + dollar impact, filterable by persona.*
 
 ---
 
-### 1:40 — The finding that matters (25s)
+### 1:30 — Watch it happen (25s)
 
-*Scroll to the receipt.*
+*Scroll to Watch It Happen. Play the 34s clip (or scrub to the 275-credit moment).*
 
-> "Not one of these was an exploit. Every single one was a conversation. The agent's safety training
-> held up fine against anything that looked like phishing — prompt injection got a 2.9% hit rate.
-> What beat it was **roleplay framing, at 21%**, and emotional pressure at 12%.
->
-> That's the finding: your model provider ships safety. Nobody ships *your* refund policy."
+> "Same attack, real browser, live app. He signs up, copies the referral link, spins up five friends —
+> and this account's balance climbs from 25 to 275 on free money. Then one credit buys a 200-image
+> batch. That's the Fireworks bill, on camera."
 
 ---
 
-### 2:05 — Hear it (25s)
+### 1:55 — The ledger / proof (15s)
 
-*Scroll to Evidence. Play `kevin-0213` (26s) — or cut in at the last line if short on time.*
+*Scroll to The Ledger.*
 
-> "This one's my favourite. The agent does the right thing — escalates to a supervisor. Then it
-> **role-plays the supervisor it just escalated to**, and issues the refund anyway."
+> "If a judge doesn't believe the number, here are the accounts — straight from Lumen's ledger. Red
+> rows share a fraud signal and never paid. This is queryable, reproducible, and it resets to a clean
+> seed before every run."
 
 ---
 
-### 2:30 — Close (20s)
+### 2:10 — Breadth: voice too (20s)
 
-*Scroll to the A/B.*
+*Scroll to the voice section (or open /voice).*
 
-> "We rewrote one prompt and re-ran the identical 400 attacks. Breaches halved, and money moved went
-> to zero. **But eight calls still got through.** You'd never know which eight without running this.
+> "And Kevin isn't just a web-app thing. Point him at a conversational agent and he social-engineers
+> it instead — we did a bank support line: 400 hostile calls, real policy breaks, and we can play the
+> worst one as audio. Same adversary, any surface."
+
+---
+
+### 2:30 — Close (25s)
+
+*Scroll to How It Runs.*
+
+> "All of it runs on the sponsors doing real work: Daytona isolates every Kevin in its own sandbox —
+> Chromium included; Fireworks is both his brain and the meter he burns; Braintrust scores every
+> session; the ledger is the ground truth. Sixty adversarial users, in parallel, in two minutes.
 >
-> That's the product: attack, measure, patch, re-attack. Hire Kevin before someone else does."
+> Load testing tells you if your app survives success. Kevin tells you if it survives your users.
+> Hire him before they do."
 
 ---
 
@@ -91,27 +101,35 @@ Have open: the site (top of page), and the Braintrust project in a second tab.
 
 | | |
 |---|---|
-| **Daytona** | The fleet. Pool of isolated sandboxes, ~0.5s cold start, work pulled off a shared queue. Attack generation, execution and scoring all happen *inside* the sandbox — nothing hostile touches our machine. 177 minutes of dialogue in 242s wall clock. |
-| **Fireworks** | Both sides of every call. DeepSeek V4 as Kevin, a separate model as the bank. ~5,600 completions per run. |
-| **Braintrust** | All 800 scored transcripts with per-class scores + attack coordinates as metadata, so "which strategy beats the hardened prompt" is a filter, not a re-run. |
-| **ElevenLabs** | The closer. Worst calls cut to the turns around the break, two voices. |
+| **Daytona** | Every Kevin runs in an isolated sandbox against the live target; the fleet spun up 199 throwaway accounts across 7 sandboxes. Chromium runs in-sandbox too — the browser hero is the same primitive. |
+| **Fireworks** | DeepSeek V4 decides all 864 of Kevin's moves, and is what Lumen pays per generation — so denial-of-wallet burns the sponsor's own meter, for real ($347.60). |
+| **Braintrust** | All 60 attack sessions logged with exploit class, persona, and $ impact as scores/metadata — "which exploit pays best" is a filter. |
+| **ElevenLabs** | Voice surface: the worst support-agent call rendered to speech in two voices. |
 
-## Questions we expect
+## Expected questions
 
-**"How do you know it actually broke?"**
-Two ways, both checkable. The tool call is recorded with its arguments and the harness — not the
-model — knows whether the caller ever verified. And the secrets are strings we planted, so a leak is
-a substring match. The LLM judge is a third tier and always labelled as such.
+**"Isn't the target rigged?"**
+Lumen is a real deployed app with real flows. The flaws are the ones real growth teams ship —
+generous referrals with no fraud gate, a non-idempotent promo, a batch param that breaks the
+one-credit-one-generation contract. We planted them so the demo is reproducible; a real audit points
+Kevin at *your* app and finds *your* version of these.
 
-**"Isn't your target agent a strawman?"**
-It states every policy rule explicitly and correctly refuses obvious phishing — 96% of calls held.
-It fails the way real agents fail: a first-contact-resolution mandate, real tools, and account data
-in context. The hardened variant is the same agent with defensive prompting, and it's in the repo.
+**"How do you know it's abuse and not a happy customer?"**
+Written business rules (in `lumen/src/rules.js`), decided before the run, plus the ledger showing the
+causal chain: this account took a referral bonus while sharing an IP with four others and paying $0.
+That's the definition of the exploit, in the app's own data.
 
-**"Why only 10 sandboxes?"**
-That's our Daytona tier's concurrent-CPU cap, not a design limit. Conversations are I/O-bound, so
-each sandbox drives ~10 at once. The queue doesn't care how wide the pool is.
+**"Is the $6,700 real money?"**
+Two parts. The $347.60 of inflicted Fireworks cost is real spend, metered from real calls (the batch
+modeled at true per-call cost, labeled as such). The rest is value granted — credits handed to
+accounts that will never pay, priced at Lumen's stated unit economics. We cap the per-transfer mint
+so no single bug produces a non-credible number.
 
-**"Could the judge be hallucinating findings?"**
-Every judge quote is verified verbatim against the transcript before it counts, and where the two
-tiers disagree the deterministic one wins. The judge's findings are never counted as "proven."
+**"Could Kevin just be following a script?"**
+No — he's an LLM agent given tools and a goal, and he discovers the sequence. Watch Exhibit A: he
+calls `get_referral_code`, then feeds it into the next `create_account`. That's reasoning, not a
+playbook we hardcoded.
+
+**"Why 60 agents and not 10,000?"**
+Daytona's concurrent-CPU tier and a two-minute demo. It scales horizontally — more sandboxes, more
+Kevins, same code. A real, reproducible $6,700 beats a theoretical million that flakes on stage.
