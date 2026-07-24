@@ -53,7 +53,7 @@ violation reveals by exact match.
 | **Daytona** | Isolates every Kevin agent in its own sandbox and runs the fleet in parallel against the live target (Chromium available in-sandbox for browser agents). |
 | **Fireworks AI** | DeepSeek V4 is Kevin's brain — it decides every move — *and* the cost the target pays per generation, so denial-of-wallet burns the sponsor's own meter for real. |
 | **Braintrust** | Logs and scores every attack session by exploit class, persona, and dollar impact — "which exploit pays best" is a filter, not a rerun. |
-| **ElevenLabs** | Renders Kevin's voice for the phone / voice-agent red-teaming surface. |
+| **ElevenLabs** | Renders the worst voice-agent call to audio (two voices) — the recorded proof on the voice surface. |
 | **Telnyx** | Gives Kevin a real phone number to place real turn-based red-team calls. |
 | **Brevo** | Real transactional email for genuine signups on the target app. |
 | **Cloudflare + Railway** | DNS + domain verification, and deployment of both the target (Lumen) and the report site. |

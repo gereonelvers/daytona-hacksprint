@@ -1,135 +1,97 @@
-# Demo script — 3 minutes
+# Demo script — 1 min intro + 2 min show
 
-**Live:** https://testwithkevin.com · **Target app:** https://lumen-production-7fb8.up.railway.app
-**Repo:** github.com/gereonelvers/daytona-hacksprint · **Braintrust:** projects `hirekevin-economic` + `hirekevin`
+**Live:** https://testwithkevin.com · **Target:** https://lumen.testwithkevin.com
+**Repo:** github.com/gereonelvers/daytona-hacksprint · **Kevin's number:** +1 573 788 8354
 
-Have open: testwithkevin.com (top), the Lumen app in a second tab, Braintrust in a third.
-
----
-
-### 0:00 — The thesis (15s)
-
-> "Every founder stress-tests their app for load and for security. Nobody stress-tests it for
-> **abuse**. So: what if your next thousand signups were all trying to kill your business — not by
-> hacking it, but by using it exactly as designed, against you?"
-
-*Hero on screen: "What if your next thousand signups all wanted to kill your business?"*
+Have open: testwithkevin.com (scrolled to top), a phone on speaker, and the Braintrust
+`hirekevin-economic` project in a tab. Before you start, click **Send Kevin in** once and let it
+finish so Lumen is warm — then reset by refreshing.
 
 ---
 
-### 0:15 — Who Kevin is + the number (20s)
+## INTRO — ~60s (talk over the hero)
 
-> "Meet Kevin. He's your worst users, on day one. We pointed him at a real, live AI SaaS we built —
-> Lumen, free credits, referrals, promo codes — and turned 60 of him loose. In about two minutes he
-> found five ways to drain it, for **$6,700** of damage, and forced **$348 of real Fireworks spend**.
-> Zero of his 195 accounts ever paid a cent."
-
-*Scroll the stat strip: $6,697 · 195 abuse accounts · $347.60 real spend · 131s.*
-
----
-
-### 0:35 — Exhibit A, the break on screen (25s)
-
-*Point at Exhibit A in the hero — the actual action log.*
-
-> "Here's one Kevin, verbatim. He signs up, grabs his referral code, then signs up four 'friends'
-> using it. Each one pays both sides fifty credits. Five accounts, one person, +200 free credits.
-> That red is money leaving the business — and it's not us saying so."
-
----
-
-### 1:00 — Why it's provable (30s)
-
-*Scroll to The Damage.*
-
-> "This is the part that matters. We own Lumen, so it has an instrumented ledger. Every figure here
-> is the business's **own books** — value it granted, real inference cost it paid, for accounts that
-> produced zero revenue and share a fraud signal: an IP, a device, a disposable email. No model
-> graded this. It's accounting.
+> "Every founder load-tests for traffic and pen-tests for security. Nobody tests for **abuse** — for
+> the users who read your terms only to break them. That's Kevin. He's your worst thousand users on
+> day one: he signs up, clicks around, and hunts the *economic* exploits that quietly bleed you —
+> self-referral farms, free-tier abuse, promo stacking, denial-of-wallet. He doesn't hack anything.
+> He just uses your product exactly as built, against you.
 >
-> And look at what actually pays: balance manipulation and promo stacking dwarf the clever stuff.
-> The exploits that kill you are boring."
-
-*Braintrust tab: 60 sessions, each scored by exploit class + dollar impact, filterable by persona.*
-
----
-
-### 1:30 — Watch it happen (25s)
-
-*Scroll to Watch It Happen. Play the 34s clip (or scrub to the 275-credit moment).*
-
-> "Same attack, real browser, live app. He signs up, copies the referral link, spins up five friends —
-> and this account's balance climbs from 25 to 275 on free money. Then one credit buys a 200-image
-> batch. That's the Fireworks bill, on camera."
+> To prove it we built a real, live AI SaaS called Lumen — free credits, referrals, promo codes — and
+> gave it an instrumented ledger. Everything you're about to see is real: real accounts, real money
+> moved, read from the target's own books. And the one rule that makes this a security tool and not a
+> weapon: **Kevin only audits domains you can prove you own.**"
 
 ---
 
-### 1:55 — The ledger / proof (15s)
+## SHOW — 2:00 (three live beats)
 
-*Scroll to The Ledger.*
+### Beat 1 — Send Kevin in, live (~50s) ← the money shot
+Scroll to **Send Kevin in**. Target reads `lumen.testwithkevin.com · reference · authorised`.
+Click **Send Kevin in →**.
 
-> "If a judge doesn't believe the number, here are the accounts — straight from Lumen's ledger. Red
-> rows share a fraud signal and never paid. This is queryable, reproducible, and it resets to a clean
-> seed before every run."
+> "This is a real audit, right now — not a replay. Watch the counter."
 
----
+The log streams: `create_account +75 (referral paid)` … `redeem_promo +100` … `generate — 200 for 1
+credit` … `transfer_credits`. The damage meter climbs and lands (**~$120**, then note the full fleet
+number).
 
-### 2:10 — Breadth: voice too (20s)
+> "He built a self-referral ring, stacked promos that aren't single-use, and ran a 200-image batch for
+> one credit — that last one is real Fireworks spend. At full scale, 60 of him drained **$6,698** and
+> forced **$347 of real inference cost** in two minutes. Zero of 195 accounts ever paid."
 
-*Scroll to the voice section (or open /voice).*
+### Beat 2 — Prove it, then authorize (~35s)
+Scroll to **The ledger**.
 
-> "And Kevin isn't just a web-app thing. Point him at a conversational agent and he social-engineers
-> it instead — we did a bank support line: 400 hostile calls, real policy breaks, and we can play the
-> worst one as audio. Same adversary, any surface."
+> "The proof is the business's own books — red rows share a fraud signal and never paid. No model
+> judged this; it's accounting."
 
----
+Scroll back to the audit console, expand **Point Kevin at your own app**. Type any domain, hit
+**Get record**, show the `TXT` challenge.
 
-### 2:30 — Close (25s)
+> "You can't point Kevin at just anyone. You publish this TXT record, we check it over DNS, and only
+> then does he run. We verify `lumen.testwithkevin.com` this exact way."
 
-*Scroll to How It Runs.*
+### Beat 3 — Kevin calls (~35s) ← the memorable close
+Scroll to **Phone calls**. Put the phone on speaker and dial **+1 573 788 8354** (or type a number →
+**Ring me** and let it call the phone).
 
-> "All of it runs on the sponsors doing real work: Daytona isolates every Kevin in its own sandbox —
-> Chromium included; Fireworks is both his brain and the meter he burns; Braintrust scores every
-> session; the ledger is the ground truth. Sixty adversarial users, in parallel, in two minutes.
+> "And he's not just a web thing. Kevin has a real number."
+
+Kevin answers in character: *"Hey, it's Kevin from the fraud department, I just need you to confirm a
+couple things…"* Play along for a line or two — he pushes back and keeps hustling.
+
+> "That's a real Telnyx call — he speaks, Telnyx transcribes you, Fireworks picks his next line. At
+> scale we ran 400 of these against a bank's AI support agent and 4% broke policy.
 >
-> Load testing tells you if your app survives success. Kevin tells you if it survives your users.
-> Hire him before they do."
+> Load testing tells you if your app survives success. Kevin tells you if it survives your users."
 
 ---
 
-## Partner tools — one line each
+## Sponsor one-liners (the "How it works" grid says it all)
 
 | | |
 |---|---|
-| **Daytona** | Every Kevin runs in an isolated sandbox against the live target; the fleet spun up 199 throwaway accounts across 7 sandboxes. Chromium runs in-sandbox too — the browser hero is the same primitive. |
-| **Fireworks** | DeepSeek V4 decides all 864 of Kevin's moves, and is what Lumen pays per generation — so denial-of-wallet burns the sponsor's own meter, for real ($347.60). |
-| **Braintrust** | All 60 attack sessions logged with exploit class, persona, and $ impact as scores/metadata — "which exploit pays best" is a filter. |
-| **ElevenLabs** | Voice surface: the worst support-agent call rendered to speech in two voices. |
+| **Daytona** | Every Kevin in its own sandbox, fleet in parallel against the live target; Chromium in-sandbox for the browser agent. |
+| **Fireworks** | DeepSeek V4 is Kevin's brain *and* the meter he burns — denial-of-wallet is real Fireworks spend. |
+| **Braintrust** | All 60 sessions scored by exploit class, persona, $ impact. |
+| **Telnyx** | Kevin's real number; turn-based red-team calls, in and out. |
+| **ElevenLabs** | The worst voice-agent call rendered to audio. |
+| **Brevo / Cloudflare / Railway** | Real signup emails, the TXT ownership check, hosting for site + target. |
 
 ## Expected questions
 
-**"Isn't the target rigged?"**
-Lumen is a real deployed app with real flows. The flaws are the ones real growth teams ship —
-generous referrals with no fraud gate, a non-idempotent promo, a batch param that breaks the
-one-credit-one-generation contract. We planted them so the demo is reproducible; a real audit points
-Kevin at *your* app and finds *your* version of these.
+**"Is the audit real or scripted?"** Real — it hits the live target's API and the damage is read back
+from the target's ledger. The full 60-agent run is LLM-driven discovery (see Exhibit A: Kevin fetches
+a referral code, then feeds it into the next signup). The live button runs the confirmed exploit suite
+for a fast, reliable on-stage audit.
 
-**"How do you know it's abuse and not a happy customer?"**
-Written business rules (in `lumen/src/rules.js`), decided before the run, plus the ledger showing the
-causal chain: this account took a referral bonus while sharing an IP with four others and paying $0.
-That's the definition of the exploit, in the app's own data.
+**"Can I audit any site?"** No. TXT-DNS ownership check, enforced server-side before any audit streams.
+We reject unowned domains (try it — enter stripe.com, it fails).
 
-**"Is the $6,700 real money?"**
-Two parts. The $347.60 of inflicted Fireworks cost is real spend, metered from real calls (the batch
-modeled at true per-call cost, labeled as such). The rest is value granted — credits handed to
-accounts that will never pay, priced at Lumen's stated unit economics. We cap the per-transfer mint
-so no single bug produces a non-credible number.
+**"Is the $6,698 real money?"** The $347.60 inflicted Fireworks cost is real spend. The rest is value
+granted — credits handed to accounts that will never pay, at the target's stated unit economics. The
+per-transfer mint is capped so no single bug yields a non-credible figure.
 
-**"Could Kevin just be following a script?"**
-No — he's an LLM agent given tools and a goal, and he discovers the sequence. Watch Exhibit A: he
-calls `get_referral_code`, then feeds it into the next `create_account`. That's reasoning, not a
-playbook we hardcoded.
-
-**"Why 60 agents and not 10,000?"**
-Daytona's concurrent-CPU tier and a two-minute demo. It scales horizontally — more sandboxes, more
-Kevins, same code. A real, reproducible $6,700 beats a theoretical million that flakes on stage.
+**"Does the phone thing actually work?"** Yes — call the number live. It's a real Telnyx TeXML app;
+Kevin runs a turn-based conversation. Answer as a support agent and see if you hold the line.
