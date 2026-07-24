@@ -7,3 +7,10 @@ out/
 results/run-*.json
 .DS_Store
 *.log
+
+# source images (compressed copies live in web/public/kevin)
+/kevin.png
+/kevin-money.png
+/kevin-calling.png
+/kevin-laptop.png
+/kevin-icon.png

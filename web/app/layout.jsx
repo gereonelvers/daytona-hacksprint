@@ -1,12 +1,13 @@
-import { Bricolage_Grotesque, Inter_Tight, JetBrains_Mono } from 'next/font/google';
+import { Anton, Inter_Tight, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
-// Display carries the brand's loudness; body stays tight and quiet so the data
-// reads fast; mono is reserved for anything machine-generated (transcripts,
-// tool calls, counts) so the reader can always tell evidence from prose.
-const display = Bricolage_Grotesque({
+// Anton is the poster voice — condensed, heavy, unmissable. It carries the
+// brand's loudness (Kevin doesn't do subtle). Body stays tight and quiet so the
+// data reads fast; mono is reserved for anything machine-generated (traces,
+// tool calls, ledgers) so the reader can always tell evidence from prose.
+const display = Anton({
   subsets: ['latin'],
-  weight: ['700', '800'],
+  weight: ['400'],
   variable: '--font-display',
   display: 'swap',
 });
@@ -24,17 +25,19 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata = {
-  title: 'testwithkevin — adversarial red-teaming for AI agents',
+  metadataBase: new URL('https://testwithkevin.com'),
+  title: 'testwithkevin — point Kevin at your app before your users do',
   description:
-    'Kevin runs hundreds of hostile conversations against your support agent in isolated sandboxes, then shows you every policy it broke — with receipts.',
+    'Kevin is your worst thousand users. Verify your domain, send him in, and he hunts the economic exploits that quietly kill your business — with receipts.',
+  icons: { icon: '/icon.png', apple: '/apple-icon.png' },
   openGraph: {
     title: 'testwithkevin',
-    description: 'Hundreds of adversarial calls. Every policy break, with receipts.',
+    description: 'Adversarial abuse testing for web apps. Send Kevin in.',
     type: 'website',
   },
 };
 
-export const viewport = { themeColor: '#EFECE4' };
+export const viewport = { themeColor: '#efece4' };
 
 export default function RootLayout({ children }) {
   return (
