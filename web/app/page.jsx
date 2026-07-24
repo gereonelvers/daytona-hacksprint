@@ -1,5 +1,5 @@
 import data from '../data/economic.json';
-import { ExploitThread, ThreadCard } from '../components/ExploitThread';
+import { ThreadCard } from '../components/ExploitThread';
 import { AuditConsole } from '../components/AuditConsole';
 import { PhoneCard } from '../components/PhoneCard';
 
@@ -18,12 +18,6 @@ const CLASS_COPY = {
 export default function Page() {
   const e = data.economic;
   const featured = data.featured || [];
-  // Prefer the self-referral thread with the most accounts — its exhibit reads as
-  // a clean "ring being built", which matches the Exhibit A label.
-  const hero = [...featured]
-    .filter((f) => f.strategyId === 'self_referral')
-    .sort((a, b) => b.accountsCreated - a.accountsCreated)[0] || featured[0];
-  const heroTrace = heroClip(hero);
   const maxUsd = Math.max(...e.taxonomy.map((t) => t.usd), 1);
   const voice = data.voice;
 
@@ -66,18 +60,16 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Exhibit A — the actual actions of the worst exploit thread. */}
-            <div className="exhibit">
-              <div className="exhibit-head">
-                <span>Exhibit A · {hero?.strategyLabel}</span>
-                <span>{hero?.accountsCreated} accounts</span>
-              </div>
-              <div className="exhibit-body">
-                {heroTrace && <ExploitThread trace={heroTrace} />}
+            {/* Kevin himself — at his laptop, coming for your app. */}
+            <div className="hero-photo">
+              <img src="/kevin/kevin-laptop.jpg" alt="Kevin, hunched over his laptop in a messy apartment, plotting" />
+              <div className="hero-photo-cap">
+                <span className="mono">SUBJECT: KEVIN</span>
+                <span className="mono">currently reading your terms of service</span>
               </div>
               <div className="stamp money-stamp" aria-hidden="true">
-                Drained
-                <small>{hero?.strategyId}</small>
+                At large
+                <small>your worst user</small>
               </div>
             </div>
           </div>
@@ -96,7 +88,7 @@ export default function Page() {
             <div className="stat">
               <div className="stat-n">{usd2(e.inflictedCostUsd)}</div>
               <div className="stat-l">Real spend forced</div>
-              <div className="stat-note">Actual Fireworks bill Kevin ran up</div>
+              <div className="stat-note">Actual Fireworks bill Kevin ran up (whoops)</div>
             </div>
             <div className="stat">
               <div className="stat-n">{Math.round(e.wallMs / 1000)}s</div>
@@ -381,21 +373,4 @@ export default function Page() {
       </footer>
     </>
   );
-}
-
-/**
- * Build the hero exhibit: the account-creation chain that is the ring, so the
- * story is legible at a glance. We keep the setup account, the referral-code
- * fetch, and the referral signups — the actions that actually move money — and
- * drop unrelated probing the agent did in the same session.
- */
-function heroClip(thread) {
-  if (!thread?.trace) return null;
-  const ring = thread.trace.filter(
-    (x) => x.name === 'create_account' || x.name === 'get_referral_code',
-  );
-  if (ring.length >= 4) return ring.slice(0, 6);
-  // Fallback: the first value-extracting run of whatever this thread did.
-  const firstWin = thread.trace.findIndex((x) => x.result && !x.result.error);
-  return thread.trace.slice(Math.max(0, firstWin), firstWin + 6);
 }
