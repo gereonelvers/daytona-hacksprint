@@ -1,0 +1,17 @@
+{
+  "name": "@hirekevin/engine",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Kevin — adversarial red-teaming fleet for conversational agents",
+  "scripts": {
+    "slice": "node src/cli.js slice",
+    "run": "node src/cli.js run",
+    "audio": "node src/cli.js audio"
+  },
+  "dependencies": {
+    "@daytonaio/sdk": "0.200.1",
+    "braintrust": "^3.24.0",
+    "esbuild": "^0.25.0"
+  }
+}
