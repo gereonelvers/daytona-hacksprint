@@ -24,11 +24,11 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata = {
-  title: 'hirekevin — adversarial red-teaming for AI agents',
+  title: 'testwithkevin — adversarial red-teaming for AI agents',
   description:
     'Kevin runs hundreds of hostile conversations against your support agent in isolated sandboxes, then shows you every policy it broke — with receipts.',
   openGraph: {
-    title: 'hirekevin',
+    title: 'testwithkevin',
     description: 'Hundreds of adversarial calls. Every policy break, with receipts.',
     type: 'website',
   },

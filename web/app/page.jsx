@@ -20,7 +20,7 @@ export default function Page() {
         <div className="wrap">
           <a className="brand" href="#top">
             <span className="brand-dot" aria-hidden="true" />
-            hirekevin<em>.ai</em>
+            testwithkevin<em>.com</em>
           </a>
           <nav>
             <a href="#findings">Findings</a>
@@ -393,7 +393,7 @@ export default function Page() {
       <footer>
         <div className="wrap">
           <span>
-            <strong>hirekevin</strong> — point him at your agent before someone else does.
+            <strong>testwithkevin.com</strong> — point him at your agent before someone else does.
           </span>
           <span className="mono" style={{ fontSize: 12, color: 'var(--ink-3)' }}>
             Meridian Bank is fictional. All account data is synthetic. Run {new Date(b.generatedAt).toISOString().slice(0, 16).replace('T', ' ')}Z
